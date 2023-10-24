@@ -14,10 +14,12 @@ const renderPokemon = async (pokemon) => {
   const data = await fetchPokemon(pokemon);
   pokemonNome.innerHTML = data.name;
   pokemonNum.innerHTML = data.id;
-  pokemonIMG.src =
-    data["sprites"][
-      "front_default"
-    ];
+  pokemonIMG.src = data["sprites"]["front_default"]; /* pokemon animado */
+
+  /* pokemonImage.src =
+     data["sprites"]["versions"]["generation-v"]["black-white"]["animated"][
+       "front_default"
+     ]; */
 };
 
 renderPokemon("1010");
