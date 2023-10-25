@@ -35,10 +35,32 @@ main {
   color: #aaa;
   top: 54.4%;
   right: 27%;
-  font-size: clamp(8px, 5vh, 25px);  /*clamp(tamanho minimo, tamanho que desejo, tamanho maximo)*/
+  font-size: clamp(
+    8px,
+    5vh,
+    25px
+  ); /*clamp(tamanho minimo, tamanho que desejo, tamanho maximo)*/
 }
 
 .pokemonNome {
   color: black;
   text-transform: capitalize;
+}
+.pokemonTipos {
+  height: auto;
+  width: auto;
+}
+.tipo-fire {
+  color: white;
+  background-color: red;
+  border-radius: 10px;
+  margin-right: 10px;
+  height: 200000px;
+  width: 150px;
+  display: inline-block;
+}
+
+.tipo-flying {
+  color: grey;
+  margin-right: 10px;
 }
