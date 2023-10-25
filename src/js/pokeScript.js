@@ -3,41 +3,70 @@ const pokemonNum = document.querySelector(".pokemonNum");
 const pokemonIMG = document.querySelector(".pokemonIMG");
 const pokemonType = document.querySelector(".pokemonTipos");
 
+const form = document.querySelector(".form");
+const input = document.querySelector(".input__search");
+const buttonPrev = document.querySelector(".btn-prev");
+const buttonNext = document.querySelector(".btn-next");
+
+let searchPokemon = 1;
+
 const fetchPokemon = async (pokemon) => {
   const APIResponse = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${pokemon}`
   );
-  const data = await APIResponse.json();
-  return data;
+  if (APIResponse.status == 200) {
+    const data = await APIResponse.json();
+    return data;
+  }
 };
 
 const renderPokemon = async (pokemon) => {
+  pokemonNome.innerHTML = "Loading...";
+
+  pokemonType.innerHTML = "";
+
   const data = await fetchPokemon(pokemon);
-  pokemonNome.innerHTML = data.name;
-  pokemonNum.innerHTML = data.id;
+  if (data) {
+    pokemonNome.innerHTML = data.name;
+    pokemonNum.innerHTML = data.id;
+    pokemonIMG.style.display = "block";
+    pokemonIMG.src =
+      data["sprites"]["other"]["official-artwork"][
+        "front_default"
+      ]; /* pokemon com a arte official */
 
-  pokemonIMG.src =
-    data["sprites"]["other"]["official-artwork"][
-      "front_default"
-    ]; /* pokemon com a arte official */
-  // const types = data.types.map((typeSlot) => typeSlot.type.name).join("  ");
-  // pokemonType.innerHTML = types;
-  // const tipo = data.types[1].type.name;
-  // pokemonType.innerHTML = `Tipo: <span class="tipo-${tipo} tipo-${tipo}">${tipo}${tipo}</span>`;
+    const tipos = data.types.map((typeSlot) => typeSlot.type.name);
 
-  const tipos = data.types.map((typeSlot) => typeSlot.type.name);
+    tipos.forEach((tipo) => {
+      const tipoElement = document.createElement("span");
+      tipoElement.textContent = tipo;
+      tipoElement.classList.add("tipo-" + tipo);
+      pokemonType.appendChild(tipoElement);
 
-  tipos.forEach((tipo) => {
-    const tipoElement = document.createElement("span");
-    tipoElement.textContent = tipo;
-    tipoElement.classList.add("tipo-" + tipo);
-    pokemonType.appendChild(tipoElement);
-  });
+      input.value = "";
+    });
+  } else {
+    pokemonIMG.style.display = "none";
+    pokemonNome.innerHTML = "Not found ;-;";
+    pokemonNum.innerHTML = " ";
+  }
 };
 
-renderPokemon("6");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  renderPokemon(input.value.toLowerCase());
+});
 
-// pokemonIMG.src =
-//   data["sprites"]["versions"]["generation-v"]["black-white"]["animated"][
-//     "front_default"
-//   ];
+buttonPrev.addEventListener("click", () => {
+  if (searchPokemon > 1) {
+    searchPokemon -= 1;
+    renderPokemon(searchPokemon);
+  }
+});
+
+buttonNext.addEventListener("click", () => {
+  searchPokemon += 1;
+  renderPokemon(searchPokemon);
+});
+
+renderPokemon(searchPokemon);
