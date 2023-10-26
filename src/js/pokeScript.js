@@ -8,7 +8,7 @@ const input = document.querySelector(".input__search");
 const buttonPrev = document.querySelector(".btn-prev");
 const buttonNext = document.querySelector(".btn-next");
 
-let searchPokemon = 1;
+let searchPokemon = 149;
 
 const fetchPokemon = async (pokemon) => {
   const APIResponse = await fetch(
@@ -29,6 +29,7 @@ const renderPokemon = async (pokemon) => {
   if (data) {
     pokemonNome.innerHTML = data.name;
     pokemonNum.innerHTML = data.id;
+    searchPokemon = data.id;
     pokemonIMG.style.display = "block";
     pokemonIMG.src =
       data["sprites"]["other"]["official-artwork"][
